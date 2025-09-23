@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Negocio
+namespace Negocio.Workers
 {
-    public class Class1
+    public interface IPrintWorker
     {
+        void Start();
+        void Stop();
     }
 }
