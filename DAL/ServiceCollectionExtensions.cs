@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 
 namespace DAL

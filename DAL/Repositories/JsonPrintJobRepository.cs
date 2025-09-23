@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 using System.IO;
 using Domain.Repositories;
 using System.Text.Json;
-using Domain.Entities;
 
 
 namespace DAL.Repositories
@@ -66,6 +65,13 @@ namespace DAL.Repositories
                     .ThenBy(j => j.CreatedAt) // En caso de empate, el más antiguo
                     .FirstOrDefault();
             }
+        }
+
+        // Nuevo método requerido por la interfaz
+        public PrintJob GetNextPendingByPriority()
+        {
+            // Implementación similar a GetNextPendingJob, pero puedes ajustar la lógica si es necesaria
+            return GetNextPendingJob();
         }
 
         public IEnumerable<PrintJob> GetAll()

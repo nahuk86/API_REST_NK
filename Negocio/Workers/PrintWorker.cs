@@ -49,7 +49,8 @@ namespace Negocio.Workers
         {
             try
             {
-                var pendingJob = _printJobRepository.GetHighestPriorityPending();
+                // ✅ Cambiar GetHighestPriorityPending() por GetNextPendingByPriority()
+                var pendingJob = _printJobRepository.GetNextPendingByPriority();
                 if (pendingJob == null)
                     return;
 
@@ -79,14 +80,8 @@ namespace Negocio.Workers
 
                 _printJobRepository.Save(job);
 
-                // Guardar en el registro de documentos impresos
-                var printedDocument = new PrintedDocument
-                {
-                    Id = Guid.NewGuid(),
-                    Name = job.Name,
-                    PrintedAt = job.PrintedAt.Value,
-                    InsertedAt = DateTime.UtcNow
-                };
+                // ✅ Guardar en el registro de documentos impresos sin Id
+                var printedDocument = new PrintedDocument(job.Name, job.PrintedAt.Value);
 
                 _printedDocumentRepository.Save(printedDocument);
             }

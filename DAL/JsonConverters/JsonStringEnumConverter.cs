@@ -15,7 +15,13 @@ namespace DAL.JsonConverters
         public override JobStatus Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
             string value = reader.GetString();
-            return Enum.Parse<JobStatus>(value, true);
+
+            if (Enum.TryParse<JobStatus>(value, true, out JobStatus result))
+            {
+                return result;
+            }
+
+            throw new JsonException($"Unable to convert \"{value}\" to JobStatus enum.");
         }
 
         public override void Write(Utf8JsonWriter writer, JobStatus value, JsonSerializerOptions options)
