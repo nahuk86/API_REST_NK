@@ -4,6 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Domain.Repositories;
+using DAL.Repositories;
 
 namespace DAL.Configurations
 {

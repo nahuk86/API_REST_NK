@@ -8,6 +8,8 @@ using System.Xml;
 using Newtonsoft.Json;
 using System.IO;
 using Domain.Repositories;
+using System.Text.Json;
+using Domain.Entities;
 
 
 namespace DAL.Repositories
