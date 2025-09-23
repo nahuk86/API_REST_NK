@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using Newtonsoft.Json;
 using System.IO;
 using Domain.Repositories;
@@ -74,6 +73,21 @@ namespace DAL.Repositories
             }
         }
 
+        public IEnumerable<PrintJob> GetPendingJobs()
+        {
+            lock (_lockObject)
+            {
+                var jobs = LoadAllJobs();
+                return jobs.Where(j => j.Status == JobStatus.PENDING);
+            }
+        }
+
+        public PrintJob GetHighestPriorityPending()
+        {
+            // This is an alias for GetNextPendingJob() to maintain compatibility
+            return GetNextPendingJob();
+        }
+
         private List<PrintJob> LoadAllJobs()
         {
             try
@@ -98,7 +112,7 @@ namespace DAL.Repositories
         {
             try
             {
-                var json = JsonConvert.SerializeObject(jobs, Formatting.Indented);
+                var json = JsonConvert.SerializeObject(jobs, Newtonsoft.Json.Formatting.Indented);
                 File.WriteAllText(_filePath, json);
             }
             catch (Exception ex)
