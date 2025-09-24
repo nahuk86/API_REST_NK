@@ -1,14 +1,11 @@
 ﻿using Domain.Entities;
+using Domain.Repositories;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using Newtonsoft.Json;
 using System.IO;
-using Domain.Repositories;
-using System.Text.Json;
+using System.Linq;
+using System.Xml;
 
 
 namespace DAL.Repositories
@@ -74,6 +71,20 @@ namespace DAL.Repositories
             return GetNextPendingJob();
         }
 
+        // Implementación del método faltante
+        public IEnumerable<PrintJob> GetPendingJobs()
+        {
+            lock (_lockObject)
+            {
+                var jobs = LoadAllJobs();
+                return jobs
+                    .Where(j => j.Status == JobStatus.PENDING)
+                    .OrderByDescending(j => j.Priority) // Mayor prioridad primero
+                    .ThenBy(j => j.CreatedAt) // En caso de empate, el más antiguo
+                    .ToList(); // Materializamos la consulta para evitar problemas con el lock
+            }
+        }
+
         public IEnumerable<PrintJob> GetAll()
         {
             lock (_lockObject)
@@ -106,7 +117,8 @@ namespace DAL.Repositories
         {
             try
             {
-                var json = JsonConvert.SerializeObject(jobs, Formatting.Indented);
+                // Explicitly specify Newtonsoft.Json.Formatting to resolve ambiguity
+                var json = JsonConvert.SerializeObject(jobs, Newtonsoft.Json.Formatting.Indented);
                 File.WriteAllText(_filePath, json);
             }
             catch (Exception ex)
