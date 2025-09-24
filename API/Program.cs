@@ -1,6 +1,7 @@
 using DAL;
 using Negocio;
 using Negocio.Workers;
+using API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Print Jobs API v1");
-        c.RoutePrefix = string.Empty; // Para que Swagger esté en la raíz
+        // Removed RoutePrefix setting - Swagger will be available at /swagger
     });
 }
 

@@ -35,14 +35,16 @@ namespace Negocio.Workers
             _timer.AutoReset = true;
         }
 
-        public void Start()
+        public Task StartAsync(CancellationToken cancellationToken)
         {
             _timer.Start();
+            return Task.CompletedTask;
         }
 
-        public void Stop()
+        public Task StopAsync()
         {
             _timer.Stop();
+            return Task.CompletedTask;
         }
 
         private void ProcessPendingJobs(object sender, ElapsedEventArgs e)
